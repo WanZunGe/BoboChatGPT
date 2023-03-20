@@ -15,7 +15,7 @@ logging.basicConfig(
     format="%(asctime)s [%(levelname)s] [%(filename)s:%(lineno)d] %(message)s",
 )
 
-my_api_key = ""  # 在这里输入你的 API 密钥
+my_api_key = "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"  # 在这里输入你的 API 密钥
 
 # if we are running in Docker
 if os.environ.get("dockerrun") == "yes":
@@ -59,66 +59,67 @@ with open("custom.css", "r", encoding="utf-8") as f:
 
 with gr.Blocks(
     css=customCSS,
-    theme=gr.themes.Soft(
-        primary_hue=gr.themes.Color(
-            c50="#02C160",
-            c100="rgba(2, 193, 96, 0.2)",
-            c200="#02C160",
-            c300="rgba(2, 193, 96, 0.32)",
-            c400="rgba(2, 193, 96, 0.32)",
-            c500="rgba(2, 193, 96, 1.0)",
-            c600="rgba(2, 193, 96, 1.0)",
-            c700="rgba(2, 193, 96, 0.32)",
-            c800="rgba(2, 193, 96, 0.32)",
-            c900="#02C160",
-            c950="#02C160",
-        ),
-        secondary_hue=gr.themes.Color(
-            c50="#576b95",
-            c100="#576b95",
-            c200="#576b95",
-            c300="#576b95",
-            c400="#576b95",
-            c500="#576b95",
-            c600="#576b95",
-            c700="#576b95",
-            c800="#576b95",
-            c900="#576b95",
-            c950="#576b95",
-        ),
-        neutral_hue=gr.themes.Color(
-            name="gray",
-            c50="#f9fafb",
-            c100="#f3f4f6",
-            c200="#e5e7eb",
-            c300="#d1d5db",
-            c400="#B2B2B2",
-            c500="#808080",
-            c600="#636363",
-            c700="#515151",
-            c800="#393939",
-            c900="#272727",
-            c950="#171717",
-        ),
-        radius_size=gr.themes.sizes.radius_sm,
-    ).set(
-        button_primary_background_fill="#06AE56",
-        button_primary_background_fill_dark="#06AE56",
-        button_primary_background_fill_hover="#07C863",
-        button_primary_border_color="#06AE56",
-        button_primary_border_color_dark="#06AE56",
-        button_primary_text_color="#FFFFFF",
-        button_primary_text_color_dark="#FFFFFF",
-        button_secondary_background_fill="#F2F2F2",
-        button_secondary_background_fill_dark="#2B2B2B",
-        button_secondary_text_color="#393939",
-        button_secondary_text_color_dark="#FFFFFF",
-        # background_fill_primary="#F7F7F7",
-        # background_fill_primary_dark="#1F1F1F",
-        block_title_text_color="*primary_500",
-        block_title_background_fill = "*primary_100",
-        input_background_fill="#F6F6F6",
-    ),
+    # theme=gr.themes.Soft(
+    #     primary_hue=gr.themes.Color(
+    #         c50="#02C160",
+    #         c100="rgba(2, 193, 96, 0.2)",
+    #         c200="#02C160",
+    #         c300="rgba(2, 193, 96, 0.32)",
+    #         c400="rgba(2, 193, 96, 0.32)",
+    #         c500="rgba(2, 193, 96, 1.0)",
+    #         c600="rgba(2, 193, 96, 1.0)",
+    #         c700="rgba(2, 193, 96, 0.32)",
+    #         c800="rgba(2, 193, 96, 0.32)",
+    #         c900="#02C160",
+    #         c950="#02C160",
+    #     ),
+    #     secondary_hue=gr.themes.Color(
+    #         c50="#576b95",
+    #         c100="#576b95",
+    #         c200="#576b95",
+    #         c300="#576b95",
+    #         c400="#576b95",
+    #         c500="#576b95",
+    #         c600="#576b95",
+    #         c700="#576b95",
+    #         c800="#576b95",
+    #         c900="#576b95",
+    #         c950="#576b95",
+    #     ),
+    #     neutral_hue=gr.themes.Color(
+    #         name="gray",
+    #         c50="#f9fafb",
+    #         c100="#f3f4f6",
+    #         c200="#e5e7eb",
+    #         c300="#d1d5db",
+    #         c400="#B2B2B2",
+    #         c500="#808080",
+    #         c600="#636363",
+    #         c700="#515151",
+    #         c800="#393939",
+    #         c900="#272727",
+    #         c950="#171717",
+    #     ),
+    #     radius_size=gr.themes.sizes.radius_sm,
+    # #)    
+    # ).set(
+    #     button_primary_background_fill="#06AE56",
+    #     button_primary_background_fill_dark="#06AE56",
+    #     button_primary_background_fill_hover="#07C863",
+    #     button_primary_border_color="#06AE56",
+    #     button_primary_border_color_dark="#06AE56",
+    #     button_primary_text_color="#FFFFFF",
+    #     button_primary_text_color_dark="#FFFFFF",
+    #     button_secondary_background_fill="#F2F2F2",
+    #     button_secondary_background_fill_dark="#2B2B2B",
+    #     button_secondary_text_color="#393939",
+    #     button_secondary_text_color_dark="#FFFFFF",
+    #     # background_fill_primary="#F7F7F7",
+    #     # background_fill_primary_dark="#1F1F1F",
+    #     block_title_text_color="*primary_500",
+    #     block_title_background_fill = "*primary_100",
+    #     input_background_fill="#F6F6F6",
+    # ),
 ) as demo:
     history = gr.State([])
     token_count = gr.State([])
@@ -135,7 +136,8 @@ with gr.Blocks(
     with gr.Row(scale=1).style(equal_height=True):
         with gr.Column(scale=5):
             with gr.Row(scale=1):
-                chatbot = gr.Chatbot(elem_id="chuanhu_chatbot").style(height="100%")
+                #chatbot = gr.Chatbot(elem_id="chuanhu_chatbot").style(height="100%")
+                chatbot = gr.Chatbot().style(height=800)
             with gr.Row(scale=1):
                 with gr.Column(scale=12):
                     user_input = gr.Textbox(
@@ -427,11 +429,11 @@ with gr.Blocks(
 
 logging.info(
     colorama.Back.GREEN
-    + "\n川虎的温馨提示：访问 http://localhost:7860 查看界面"
+    + "\n波波的温馨提示：访问 http://localhost:7860 查看界面"
     + colorama.Style.RESET_ALL
 )
 # 默认开启本地服务器，默认可以直接从IP访问，默认不创建公开分享链接
-demo.title = "川虎ChatGPT 🚀"
+demo.title = "波波ChatGPT ✨"
 
 if __name__ == "__main__":
     # if running in Docker
