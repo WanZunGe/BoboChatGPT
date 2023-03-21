@@ -18,7 +18,7 @@ HIDE_MY_KEY = True  # 如果你想在UI中隐藏你的 API 密钥，将此值设
 SIM_K = 5
 INDEX_QUERY_TEMPRATURE = 1.0
 
-title = """<h1 align="left" style="min-width:200px; margin-top:0;">波波ChatGPT ✨</h1>"""
+title = """<h1 align="left" style="min-width:200px; margin-top:0;">波波的Chatbot ✨</h1>"""
 description = """\
 <div align="center" style="margin:16px 0">
 

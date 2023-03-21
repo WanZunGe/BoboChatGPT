@@ -54,11 +54,11 @@ else:
 gr.Chatbot.postprocess = postprocess
 PromptHelper.compact_text_chunks = compact_text_chunks
 
-with open("custom.css", "r", encoding="utf-8") as f:
-    customCSS = f.read()
+# with open("custom.css", "r", encoding="utf-8") as f:
+#     customCSS = f.read()
 
 with gr.Blocks(
-    css=customCSS,
+    # css=customCSS,
     # theme=gr.themes.Soft(
     #     primary_hue=gr.themes.Color(
     #         c50="#02C160",
@@ -137,7 +137,7 @@ with gr.Blocks(
         with gr.Column(scale=5):
             with gr.Row(scale=1):
                 #chatbot = gr.Chatbot(elem_id="chuanhu_chatbot").style(height="100%")
-                chatbot = gr.Chatbot().style(height=800)
+                chatbot = gr.Chatbot().style(height=600)
             with gr.Row(scale=1):
                 with gr.Column(scale=12):
                     user_input = gr.Textbox(
