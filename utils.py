@@ -96,6 +96,17 @@ def delete_last_conversation(chatbot, history, previous_token_count):
         construct_token_message(sum(previous_token_count)),
     )
 
+#点击新的对话历史文件时，新建对话历史文件
+def new_file():
+    logging.info("新建对话历史中……")
+    os.makedirs(HISTORY_DIR, exist_ok=True)
+    json_s = {"system": "", "history": "", "chatbot": ""}
+    # print(json_s)
+    with open(os.path.join(HISTORY_DIR, "a新对话.json"), "w") as f:
+        json.dump(json_s,f)  
+    logging.info("新建对话历史完毕")
+    return os.path.join(HISTORY_DIR, "a新对话.json")
+
 
 def save_file(filename, system, history, chatbot):
     logging.info("保存对话历史中……")
@@ -114,6 +125,17 @@ def save_file(filename, system, history, chatbot):
     logging.info("保存对话历史完毕")
     return os.path.join(HISTORY_DIR, filename)
 
+#删除对话历史文件
+def delete_file(filename):
+    logging.info("删除对话历史中……")
+    if type(filename) != str:
+        filename = filename.name
+    try:
+        os.remove(os.path.join(HISTORY_DIR, filename))
+        logging.info("删除对话历史完毕")
+    except FileNotFoundError:
+        logging.info("没有找到对话历史文件，不执行任何操作")
+
 
 def save_chat_history(filename, system, history, chatbot):
     if filename == "":
@@ -121,6 +143,20 @@ def save_chat_history(filename, system, history, chatbot):
     if not filename.endswith(".json"):
         filename += ".json"
     return save_file(filename, system, history, chatbot)
+
+def chang_savefilename(filename):
+    if filename == "":
+        return
+    if not filename.endswith(".json"):
+        filename += ".json"
+    return filename
+
+def chang_Mychatvalue(filename):
+    if filename == "":
+        return
+    if not filename.endswith(".json"):
+        filename += ".json"
+    return filename
 
 
 def export_markdown(filename, system, history, chatbot):
@@ -226,7 +262,7 @@ def get_template_content(templates, selection, original_system_prompt):
 
 def reset_state():
     logging.info("重置状态")
-    return [], [], [], construct_token_message(0)
+    return [], [], [], [],construct_token_message(0)
 
 
 def reset_textbox():

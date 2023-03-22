@@ -1,9 +1,18 @@
 # -*- coding:utf-8 -*-
+from cgitb import enable
+import faulthandler
+from multiprocessing import Value
 import os
 import logging
+from secrets import choice
+from select import select
 import sys
+from tkinter import messagebox
+from turtle import onclick, update
+from xmlrpc.client import Fault
 
 import gradio as gr
+from numpy import empty
 
 from utils import *
 from presets import *
@@ -133,7 +142,23 @@ with gr.Blocks(
         gr.HTML(title)
         status_display = gr.Markdown("status: ready", elem_id="status_display")
 
+    
+
+
     with gr.Row(scale=1).style(equal_height=True):
+
+        with gr.Column():   
+            
+            with gr.Row(scale=1):
+                removeHistoryBtn = gr.Button("🗑️ 删除选中的对话记录")
+                MyChat=gr.Radio( 
+                    label="我的对话记录",
+                    choices=get_history_names(plain=True),
+                    type="value",
+                    value="",
+                    direction="row"
+                )
+
         with gr.Column(scale=5):
             with gr.Row(scale=1):
                 #chatbot = gr.Chatbot(elem_id="chuanhu_chatbot").style(height="100%")
@@ -209,16 +234,16 @@ with gr.Blocks(
                 with gr.Tab(label="保存/加载"):
                     with gr.Accordion(label="保存/加载对话历史记录", open=True):
                         with gr.Column():
-                            with gr.Row():
-                                with gr.Column(scale=6):
-                                    historyFileSelectDropdown = gr.Dropdown(
-                                        label="从列表中加载对话",
-                                        choices=get_history_names(plain=True),
-                                        multiselect=False,
-                                        value=get_history_names(plain=True)[0],
-                                    )
-                                with gr.Column(scale=1):
-                                    historyRefreshBtn = gr.Button("🔄 刷新")
+                            # with gr.Row():
+                            #     with gr.Row(scale=5):
+                            #         historyFileSelectDropdown = gr.Dropdown(
+                            #         label="从列表中加载对话",
+                            #         choices=get_history_names(plain=True),
+                            #         multiselect=False,
+                            #         value=get_history_names(plain=True)[0],
+                            #     )
+                            #     with gr.Column(scale=1):
+                            #         historyRefreshBtn = gr.Button("🔄 刷新")
                             with gr.Row():
                                 with gr.Column(scale=6):
                                     saveFileName = gr.Textbox(
@@ -323,9 +348,43 @@ with gr.Blocks(
 
     emptyBtn.click(
         reset_state,
-        outputs=[chatbot, history, token_count, status_display],
+        outputs=[chatbot, history,systemPromptTxt,token_count, status_display],
         show_progress=True,
     )
+    my_test = gr.Textbox(
+        show_label=True,
+        placeholder=f"设置文件名: 默认为.json，可选为.md",
+        label="设置保存文件名",
+        value="a新对话",
+        visible=False,
+    ).style(container=True)
+    #单击emptyBtn按钮时，新建一个空的历史记录文件
+    emptyBtn.click(lambda x:new_file(),None)
+    emptyBtn.click(get_history_names, None, [MyChat])
+    emptyBtn.click(
+        chang_Mychatvalue,
+        [my_test],
+        [MyChat],
+    )
+    emptyBtn.click(
+        chang_savefilename,
+        [my_test],
+        [saveFileName],
+    )
+    # def my_value_changed():
+    #     MyChat.update("a新对话.json")
+    # def my_save_file():
+    #     saveFileName.update("a新对话.json")
+
+    # emptyBtn.click(lambda x: my_value_changed, None)
+    # emptyBtn.click(lambda x:my_save_file, None)
+    
+    print(get_file_names(HISTORY_DIR, plain=False))
+    
+    #emptyBtn.click(lambda x: MyChat.update(value=""), None)
+    #单击按钮时，将用户输入的文本添加到历史记录中   
+    # emptyBtn.click(save_chat_history(), [user_input], [history])
+    
 
     retryBtn.click(
         retry,
@@ -390,20 +449,37 @@ with gr.Blocks(
         downloadFile,
         show_progress=True,
     )
-    saveHistoryBtn.click(get_history_names, None, [historyFileSelectDropdown])
+    #saveHistoryBtn.click(get_history_names, None, [historyFileSelectDropdown])
+    saveHistoryBtn.click(get_history_names, None, [MyChat])
+
+    # removeHistoryBtn.click(
+    #     delete_file(MyChat.value)
+    # )
+    
+
     exportMarkdownBtn.click(
         export_markdown,
         [saveFileName, systemPromptTxt, history, chatbot],
         downloadFile,
         show_progress=True,
     )
-    historyRefreshBtn.click(get_history_names, None, [historyFileSelectDropdown])
-    historyFileSelectDropdown.change(
+    # historyRefreshBtn.click(get_history_names, None, [historyFileSelectDropdown])
+    # historyFileSelectDropdown.change(
+    #     load_chat_history,
+    #     [historyFileSelectDropdown, systemPromptTxt, history, chatbot],
+    #     [saveFileName, systemPromptTxt, history, chatbot],
+    #     show_progress=True,
+    # )
+    
+    MyChat.change(
         load_chat_history,
-        [historyFileSelectDropdown, systemPromptTxt, history, chatbot],
+        [MyChat, systemPromptTxt, history, chatbot],
         [saveFileName, systemPromptTxt, history, chatbot],
         show_progress=True,
     )
+    
+    #MyChat.change(messagebox(str(MyChat.value)))
+
     downloadFile.change(
         load_chat_history,
         [downloadFile, systemPromptTxt, history, chatbot],
@@ -433,7 +509,7 @@ logging.info(
     + colorama.Style.RESET_ALL
 )
 # 默认开启本地服务器，默认可以直接从IP访问，默认不创建公开分享链接
-demo.title = "波波ChatGPT ✨"
+demo.title = "波波的Chatbot ✨"
 
 if __name__ == "__main__":
     # if running in Docker
@@ -449,7 +525,7 @@ if __name__ == "__main__":
         if authflag:
             demo.queue().launch(share=False, auth=(username, password))
         else:
-            demo.queue().launch(share=False)  # 改为 share=True 可以创建公开分享链接
+            demo.queue().launch(share=True)  # 改为 share=True 可以创建公开分享链接
         # demo.queue().launch(server_name="0.0.0.0", server_port=7860, share=False) # 可自定义端口
         # demo.queue().launch(server_name="0.0.0.0", server_port=7860,auth=("在这里填写用户名", "在这里填写密码")) # 可设置用户名与密码
         # demo.queue().launch(auth=("在这里填写用户名", "在这里填写密码")) # 适合Nginx反向代理
