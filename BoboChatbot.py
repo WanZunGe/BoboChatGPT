@@ -63,11 +63,11 @@ else:
 gr.Chatbot.postprocess = postprocess
 PromptHelper.compact_text_chunks = compact_text_chunks
 
-# with open("custom.css", "r", encoding="utf-8") as f:
-#     customCSS = f.read()
+with open("custom.css", "r", encoding="utf-8") as f:
+    customCSS = f.read()
 
 with gr.Blocks(
-    # css=customCSS,
+    css=customCSS,
     # theme=gr.themes.Soft(
     #     primary_hue=gr.themes.Color(
     #         c50="#02C160",
@@ -152,19 +152,19 @@ with gr.Blocks(
             with gr.Row(scale=1):
                 removeHistoryBtn = gr.Button("🗑️ 删除选中的对话记录")
                 MyChat=gr.Radio( 
-                    label="我的对话记录",
+                    label="👨‍👨‍👧 我的对话记录",
                     choices=get_history_names(plain=True),
                     type="value",
                     value="",
                     direction="row"
                 )
 
-        with gr.Column(scale=5):
-            with gr.Row(scale=1):
+        with gr.Column(scale=30):
+            with gr.Row(scale=50):
                 #chatbot = gr.Chatbot(elem_id="chuanhu_chatbot").style(height="100%")
-                chatbot = gr.Chatbot().style(height=600)
+                chatbot = gr.Chatbot().style(height=600, width=1500)
             with gr.Row(scale=1):
-                with gr.Column(scale=12):
+                with gr.Column(scale=18):
                     user_input = gr.Textbox(
                         show_label=False, placeholder="在这里输入"
                     ).style(container=False)
@@ -177,6 +177,7 @@ with gr.Blocks(
                 retryBtn = gr.Button("🔄 重新生成")
                 delLastBtn = gr.Button("🗑️ 删除一条对话")
                 reduceTokenBtn = gr.Button("♻️ 总结对话")
+                tttt = gr.Button("♻️ 总结对话")
 
         with gr.Column():
             with gr.Column(min_width=50, scale=1):
@@ -255,7 +256,7 @@ with gr.Blocks(
                                 with gr.Column(scale=1):
                                     saveHistoryBtn = gr.Button("💾 保存对话")
                                     exportMarkdownBtn = gr.Button("📝 导出为Markdown")
-                                    gr.Markdown("默认保存于history文件夹")
+                                    gr.Label("默认保存于history文件夹")
                             with gr.Row():
                                 with gr.Column():
                                     downloadFile = gr.File(interactive=True)
@@ -358,6 +359,13 @@ with gr.Blocks(
         value="a新对话",
         visible=False,
     ).style(container=True)
+    my_New = gr.Textbox(
+        show_label=True,
+        placeholder=f"设置文件名: 默认为.json，可选为.md",
+        label="设置保存文件名",
+        value="",
+        visible=False,
+    ).style(container=True)
     #单击emptyBtn按钮时，新建一个空的历史记录文件
     emptyBtn.click(lambda x:new_file(),None)
     emptyBtn.click(get_history_names, None, [MyChat])
@@ -366,11 +374,18 @@ with gr.Blocks(
         [my_test],
         [MyChat],
     )
+    # emptyBtn.click(
+    #     chang_savefilename,
+    #     [my_test],
+    #     [saveFileName],
+    # )
     emptyBtn.click(
-        chang_savefilename,
-        [my_test],
-        [saveFileName],
+        load_chat_history,
+        [MyChat, systemPromptTxt, history, chatbot],
+        [saveFileName, systemPromptTxt, history, chatbot],
+        show_progress=True,
     )
+
     # def my_value_changed():
     #     MyChat.update("a新对话.json")
     # def my_save_file():
@@ -452,10 +467,19 @@ with gr.Blocks(
     #saveHistoryBtn.click(get_history_names, None, [historyFileSelectDropdown])
     saveHistoryBtn.click(get_history_names, None, [MyChat])
 
-    # removeHistoryBtn.click(
-    #     delete_file(MyChat.value)
-    # )
-    
+    removeHistoryBtn.click(
+        delete_file,
+        [saveFileName],
+        None,
+         show_progress=True,
+
+    )
+    removeHistoryBtn.click(get_history_names, None, [MyChat])
+    removeHistoryBtn.click(
+        chang_Mychatvalue,
+        [my_test],
+        [MyChat],
+    )
 
     exportMarkdownBtn.click(
         export_markdown,

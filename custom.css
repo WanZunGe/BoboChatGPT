@@ -21,10 +21,33 @@
         background-color: var(--chatbot-color-light) !important;
     }
     [data-testid = "bot"] {
-        background-color: #FFFFFF !important;
+        background-color: #ffffff !important;
     }
     [data-testid = "user"] {
-        background-color: #95EC69 !important;
+        background-color: #138ff5 !important;
+    }
+    div.message.user.svelte-6roggh.latest{
+        font-family: "Lucida Console", "Courier New", serif;
+        font-size: 18px !important;
+    }
+    div.message.user.svelte-6roggh{
+        font-family: "Lucida Console", "Courier New", serif;
+        font-size: 18px !important;
+    }
+    div.output-class.svelte-1mylvt5.no-confidence{
+        font-size: 14px !important;
+    }
+    p{
+        color: #0e0e0e !important;
+        font-size: 18px !important;
+    }
+    li{
+        color: #0e06ee !important;
+        font-weight: bold;
+    }
+    code{
+        color: #036939 !important;
+        font-weight: bold;
     }
 }
 /* 暗色 */
@@ -33,7 +56,7 @@
         background-color: var(--chatbot-color-dark) !important;
     }
     [data-testid = "bot"] {
-        background-color: #2C2C2C !important;
+        background-color: #0c0c0c !important;
     }
     [data-testid = "user"] {
         background-color: #26B561 !important;
@@ -70,12 +93,12 @@
 }
 [data-testid = "bot"] {
     max-width: 85%;
-    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
 }
 [data-testid = "user"] {
     max-width: 85%;
     width: auto !important;
-    border-bottom-right-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
 }
 /* 表格 */
 table {

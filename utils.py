@@ -100,7 +100,7 @@ def delete_last_conversation(chatbot, history, previous_token_count):
 def new_file():
     logging.info("新建对话历史中……")
     os.makedirs(HISTORY_DIR, exist_ok=True)
-    json_s = {"system": "", "history": "", "chatbot": ""}
+    json_s = {"system":"", "history":[], "chatbot":[]}
     # print(json_s)
     with open(os.path.join(HISTORY_DIR, "a新对话.json"), "w") as f:
         json.dump(json_s,f)  
