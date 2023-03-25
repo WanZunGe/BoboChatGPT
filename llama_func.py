@@ -118,7 +118,7 @@ def chat_ai(
         context,
     )
     if response is None:
-        status_text = "查询失败，请换个问法试试"
+        status_text = "<span style='color:orange;'>查询失败，请换个问法试试</span>"
         return context, chatbot
     response = response
 
@@ -178,7 +178,7 @@ def ask_ai(
             f"Response: {colorama.Fore.BLUE}{ret_text}{colorama.Style.RESET_ALL}"
         )
         os.environ["OPENAI_API_KEY"] = ""
-        return ret_text, new_response, f"查询消耗了{llm_predictor.last_token_usage} tokens"
+        return ret_text, new_response, f"<span style='color:orange;'>查询消耗了{llm_predictor.last_token_usage} tokens</span>"
     else:
         logging.warning("No response found, returning None")
         os.environ["OPENAI_API_KEY"] = ""

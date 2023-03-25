@@ -10,8 +10,10 @@ import sys
 from tkinter import messagebox
 from turtle import onclick, update
 from xmlrpc.client import Fault
+import click
 
 import gradio as gr
+from matplotlib import scale
 from numpy import empty
 
 from utils import *
@@ -25,6 +27,9 @@ logging.basicConfig(
 )
 
 my_api_key = "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"  # 在这里输入你的 API 密钥
+
+flag = False
+
 
 # if we are running in Docker
 if os.environ.get("dockerrun") == "yes":
@@ -138,9 +143,26 @@ with gr.Blocks(
     FALSECONSTANT = gr.State(False)
     topic = gr.State("未命名对话历史记录")
 
+    def removeHistoryBtn_click():
+        global flag
+        print(f"removeHistoryBtn 控件的 click 事件被触发")
+        # 禁止 Checkbox 控件的 change 事件
+        flag = True
+
+    def MyChat_change():
+        global flag
+        if not flag:
+            print(f"MyChat 控件的 change 事件被触发")
+        else:
+            print(f"MyChat 控件的 change 事件被禁止")
+        # 启用 Checkbox 控件的 change 事件
+        flag = False
+
+    #tttt = gr.Button("♻️ 总结对话")
+
     with gr.Row():
         gr.HTML(title)
-        status_display = gr.Markdown("status: ready", elem_id="status_display")
+        status_display = gr.Markdown("<span style='color:orange;'>status: ready</span>", elem_id="status_display")
 
     
 
@@ -150,19 +172,27 @@ with gr.Blocks(
         with gr.Column():   
             
             with gr.Row(scale=1):
-                removeHistoryBtn = gr.Button("🗑️ 删除选中的对话记录")
+                systemPromptTxt = gr.Textbox(
+                        show_label=True,
+                        placeholder=f"在这里输入System Prompt...",
+                        label="System prompt",
+                        value=initial_prompt,
+                        lines=10,
+                ).style(container=True)
+                removeHistoryBtn = gr.Button("🗑️ 删除选中的对话记录",click=removeHistoryBtn_click())
                 MyChat=gr.Radio( 
                     label="👨‍👨‍👧 我的对话记录",
                     choices=get_history_names(plain=True),
                     type="value",
                     value="",
-                    direction="row"
+                    direction="row",
+                    onchange=MyChat_change(),
                 )
 
-        with gr.Column(scale=30):
-            with gr.Row(scale=50):
+        with gr.Column(scale=80):
+            with gr.Row(scale=100):
                 #chatbot = gr.Chatbot(elem_id="chuanhu_chatbot").style(height="100%")
-                chatbot = gr.Chatbot().style(height=600, width=1500)
+                chatbot = gr.Chatbot().style(height=800, width=1500)
             with gr.Row(scale=1):
                 with gr.Column(scale=18):
                     user_input = gr.Textbox(
@@ -177,7 +207,7 @@ with gr.Blocks(
                 retryBtn = gr.Button("🔄 重新生成")
                 delLastBtn = gr.Button("🗑️ 删除一条对话")
                 reduceTokenBtn = gr.Button("♻️ 总结对话")
-                tttt = gr.Button("♻️ 总结对话")
+               
 
         with gr.Column():
             with gr.Column(min_width=50, scale=1):
@@ -200,13 +230,7 @@ with gr.Blocks(
                     index_files = gr.Files(label="上传索引文件", type="file", multiple=True)
 
                 with gr.Tab(label="Prompt"):
-                    systemPromptTxt = gr.Textbox(
-                        show_label=True,
-                        placeholder=f"在这里输入System Prompt...",
-                        label="System prompt",
-                        value=initial_prompt,
-                        lines=10,
-                    ).style(container=True)
+                    
                     with gr.Accordion(label="加载Prompt模板", open=True):
                         with gr.Column():
                             with gr.Row():
@@ -251,7 +275,7 @@ with gr.Blocks(
                                         show_label=True,
                                         placeholder=f"设置文件名: 默认为.json，可选为.md",
                                         label="设置保存文件名",
-                                        value="对话历史记录",
+                                        value="😀新对话",
                                     ).style(container=True)
                                 with gr.Column(scale=1):
                                     saveHistoryBtn = gr.Button("💾 保存对话")
@@ -263,7 +287,7 @@ with gr.Blocks(
 
                 with gr.Tab(label="高级"):
                     default_btn = gr.Button("🔙 恢复默认设置")
-                    gr.Markdown("# ⚠️ 务必谨慎更改 ⚠️\n\n如果无法使用请恢复默认设置")
+                    gr.Markdown("# ⚠️ 务必谨慎更改 ⚠️\n\n<span style='color:orange;'>如果无法使用请恢复默认设置</span>")
 
                     with gr.Accordion("参数", open=False):
                         top_p = gr.Slider(
@@ -347,49 +371,66 @@ with gr.Blocks(
     )
     submitBtn.click(reset_textbox, [], [user_input])
 
+    
+
     emptyBtn.click(
         reset_state,
         outputs=[chatbot, history,systemPromptTxt,token_count, status_display],
         show_progress=True,
     )
-    my_test = gr.Textbox(
-        show_label=True,
-        placeholder=f"设置文件名: 默认为.json，可选为.md",
-        label="设置保存文件名",
-        value="a新对话",
-        visible=False,
-    ).style(container=True)
-    my_New = gr.Textbox(
-        show_label=True,
-        placeholder=f"设置文件名: 默认为.json，可选为.md",
-        label="设置保存文件名",
-        value="",
-        visible=False,
-    ).style(container=True)
+    with gr.Row(scale=1):
+        my_test = gr.Textbox(
+            show_label=True,
+            placeholder=f"设置文件名: 默认为.json，可选为.md",
+            label="设置保存文件名",
+            value="😀新对话.json",
+            visible=False,
+        ).style(container=True)
+        myLastFilename = gr.Textbox(
+            show_label=True,
+            placeholder=f"设置文件名: 默认为.json，可选为.md",
+            label="设置保存文件名",
+            value="😀新对话.json",
+            visible=False,
+        ).style(container=True)
+        # my_Newchat =gr.Chatbot().style(height=0)
+
     #单击emptyBtn按钮时，新建一个空的历史记录文件
-    emptyBtn.click(lambda x:new_file(),None)
+    emptyBtn.click(
+        save_chang_load_chat_history,
+        [MyChat, systemPromptTxt, history, chatbot,my_test],
+        [saveFileName, systemPromptTxt, history, chatbot],
+        show_progress=True,
+    )
+
+    # emptyBtn.click(
+    #     save_chat_history,
+    #     [MyChat, systemPromptTxt, history, chatbot],
+    #     [saveFileName, systemPromptTxt, history, chatbot],
+    # )
+    # emptyBtn.click(lambda x:new_file(),None)
     emptyBtn.click(get_history_names, None, [MyChat])
     emptyBtn.click(
         chang_Mychatvalue,
         [my_test],
         [MyChat],
     )
+    # # emptyBtn.click(
+    # #     chang_savefilename,
+    # #     [my_test],
+    # #     [saveFileName],
+    # # )
     # emptyBtn.click(
-    #     chang_savefilename,
-    #     [my_test],
-    #     [saveFileName],
+    #     load_chat_history,
+    #     [MyChat, systemPromptTxt, history, chatbot],
+    #     [saveFileName, systemPromptTxt, history, chatbot],
+    #     show_progress=True,
     # )
-    emptyBtn.click(
-        load_chat_history,
-        [MyChat, systemPromptTxt, history, chatbot],
-        [saveFileName, systemPromptTxt, history, chatbot],
-        show_progress=True,
-    )
 
     # def my_value_changed():
-    #     MyChat.update("a新对话.json")
+    #     MyChat.update("😀新对话.json")
     # def my_save_file():
-    #     saveFileName.update("a新对话.json")
+    #     saveFileName.update("😀新对话.json")
 
     # emptyBtn.click(lambda x: my_value_changed, None)
     # emptyBtn.click(lambda x:my_save_file, None)
@@ -457,7 +498,7 @@ with gr.Blocks(
         show_progress=True,
     )
 
-    # S&L
+    # S&L 点击保存按钮时，将聊天框文本存入当前对话文件中
     saveHistoryBtn.click(
         save_chat_history,
         [saveFileName, systemPromptTxt, history, chatbot],
@@ -467,19 +508,16 @@ with gr.Blocks(
     #saveHistoryBtn.click(get_history_names, None, [historyFileSelectDropdown])
     saveHistoryBtn.click(get_history_names, None, [MyChat])
 
-    removeHistoryBtn.click(
-        delete_file,
-        [saveFileName],
-        None,
-         show_progress=True,
+    #聊天框有变化时，将聊天框文本存入当前对话文件中
+    # chatbot.change(
+    #     save_chat_history,
+    #     [saveFileName, systemPromptTxt, history, chatbot],
+    #     downloadFile,
+    #     show_progress=True,
+    # )
+    
 
-    )
-    removeHistoryBtn.click(get_history_names, None, [MyChat])
-    removeHistoryBtn.click(
-        chang_Mychatvalue,
-        [my_test],
-        [MyChat],
-    )
+    
 
     exportMarkdownBtn.click(
         export_markdown,
@@ -494,15 +532,48 @@ with gr.Blocks(
     #     [saveFileName, systemPromptTxt, history, chatbot],
     #     show_progress=True,
     # )
+    #如果saveFileName, systemPromptTxt, history, chatbot同时为空，则不执行load_chat_history函数
     
+
     MyChat.change(
-        load_chat_history,
-        [MyChat, systemPromptTxt, history, chatbot],
-        [saveFileName, systemPromptTxt, history, chatbot],
-        show_progress=True,
+            saveandload_chat_history,
+            [saveFileName, systemPromptTxt, history, chatbot,MyChat],
+            [saveFileName, systemPromptTxt, history, chatbot],
+            show_progress=True,
     )
+    # MyChat.change(
+    #     load_chat_history,
+    #     [MyChat, systemPromptTxt, history, chatbot],
+    #     [saveFileName, systemPromptTxt, history, chatbot],
+    #     show_progress=True,
+    # )
+       
     
     #MyChat.change(messagebox(str(MyChat.value)))
+    
+    
+    removeHistoryBtn.click(
+        delete_file,
+        [saveFileName,my_test],
+        saveFileName,
+         show_progress=True,
+
+    )
+    removeHistoryBtn.click(
+        get_history_names, 
+        None,
+        [MyChat]
+    )
+    removeHistoryBtn.click(
+        chang_Mychatvalue,
+        [my_test],
+        [MyChat],
+        show_progress=True,
+    )
+    # removeHistoryBtn.click(lambda x:new_file(),None)
+    
+
+
 
     downloadFile.change(
         load_chat_history,
@@ -533,7 +604,7 @@ logging.info(
     + colorama.Style.RESET_ALL
 )
 # 默认开启本地服务器，默认可以直接从IP访问，默认不创建公开分享链接
-demo.title = "波波的Chatbot ✨"
+demo.title = "波波的私人助理 ✨"
 
 if __name__ == "__main__":
     # if running in Docker

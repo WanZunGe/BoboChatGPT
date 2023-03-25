@@ -9,19 +9,24 @@
     min-height: 2.5em;
     align-items: flex-end;
     justify-content: flex-end;
+    color: chocolate;
 }
 #status_display p {
     font-size: .85em;
     font-family: monospace;
-    color: var(--body-text-color-subdued);
+    /*color: var(--body-text-color-subdued);*/
+    color: #ff8400;
 }
 /* 亮色 */
 @media (prefers-color-scheme: light) {
     #chuanhu_chatbot {
         background-color: var(--chatbot-color-light) !important;
+        padding: 30px;
+        width: 100%;
     }
     [data-testid = "bot"] {
         background-color: #ffffff !important;
+        padding: 30px;
     }
     [data-testid = "user"] {
         background-color: #138ff5 !important;
@@ -29,24 +34,37 @@
     div.message.user.svelte-6roggh.latest{
         font-family: "Lucida Console", "Courier New", serif;
         font-size: 18px !important;
+        font-weight: bold;
     }
     div.message.user.svelte-6roggh{
         font-family: "Lucida Console", "Courier New", serif;
         font-size: 18px !important;
+        font-weight: bold;
     }
     div.output-class.svelte-1mylvt5.no-confidence{
         font-size: 14px !important;
     }
     p{
-        color: #0e0e0e !important;
-        font-size: 18px !important;
+        color: #000000 !important;
+        font-size: 16px !important;
+        font-weight: bold;
+    }
+
+    P.orange-text{
+        color: #ff8400 !important;
+        font-weight: bold;
+    }
+    ol{
+        padding-left: 20px !important;
     }
     li{
-        color: #0e06ee !important;
+        color: #070462 !important;
+        font-size: 16px !important;
         font-weight: bold;
     }
     code{
-        color: #036939 !important;
+        color: #c112e0 !important;
+        font-size: 16px !important;
         font-weight: bold;
     }
 }
@@ -93,12 +111,13 @@
 }
 [data-testid = "bot"] {
     max-width: 85%;
-    border-bottom-right-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+    /*overflow-x: scroll;*/
 }
 [data-testid = "user"] {
     max-width: 85%;
     width: auto !important;
-    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
 }
 /* 表格 */
 table {

@@ -18,15 +18,15 @@ HIDE_MY_KEY = True  # 如果你想在UI中隐藏你的 API 密钥，将此值设
 SIM_K = 5
 INDEX_QUERY_TEMPRATURE = 1.0
 
-title = """<h1 align="left" style="min-width:200px; margin-top:0;">波波的Chatbot ✨</h1>"""
+title = """<h1 align="left" style="min-width:200px; margin-top:0;">波波的私人助理 ✨</h1>"""
 description = """\
 <div align="center" style="margin:16px 0">
 
-由波波开发
+<span style='color:orange;'>由波波开发</span>
 
-访问波波ChatGPT的 [GitHub项目](https://gitee.com/asdlkjhhb/BoboChatGPT) 下载最新版脚本
+<span style='color:orange;'>访问波波ChatGPT的</span> [GitHub项目](https://gitee.com/asdlkjhhb/BoboChatGPT) <span style='color:orange;'>下载最新版脚本</span>
 
-此App使用 `gpt-3.5-turbo` 大语言模型
+<span style='color:orange;'>此App使用</span> `gpt-3.5-turbo` <span style='color:orange;'>大语言模型</span>
 </div>
 """
 

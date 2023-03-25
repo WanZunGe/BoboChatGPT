@@ -10,6 +10,7 @@ import csv
 
 import gradio as gr
 from pypinyin import lazy_pinyin
+from sqlalchemy import false
 import tiktoken
 
 from presets import *
@@ -71,7 +72,7 @@ def construct_assistant(text):
 
 
 def construct_token_message(token, stream=False):
-    return f"Token 计数: {token}"
+    return f"<span style='color:orange;'>Token 计数: {token}</span>"
 
 
 def delete_last_conversation(chatbot, history, previous_token_count):
@@ -102,10 +103,10 @@ def new_file():
     os.makedirs(HISTORY_DIR, exist_ok=True)
     json_s = {"system":"", "history":[], "chatbot":[]}
     # print(json_s)
-    with open(os.path.join(HISTORY_DIR, "a新对话.json"), "w") as f:
+    with open(os.path.join(HISTORY_DIR, "😀新对话.json"), "w") as f:
         json.dump(json_s,f)  
     logging.info("新建对话历史完毕")
-    return os.path.join(HISTORY_DIR, "a新对话.json")
+    return os.path.join(HISTORY_DIR, "😀新对话.json")
 
 
 def save_file(filename, system, history, chatbot):
@@ -126,7 +127,7 @@ def save_file(filename, system, history, chatbot):
     return os.path.join(HISTORY_DIR, filename)
 
 #删除对话历史文件
-def delete_file(filename):
+def delete_file(filename,newfilename):
     logging.info("删除对话历史中……")
     if type(filename) != str:
         filename = filename.name
@@ -135,6 +136,7 @@ def delete_file(filename):
         logging.info("删除对话历史完毕")
     except FileNotFoundError:
         logging.info("没有找到对话历史文件，不执行任何操作")
+    return newfilename
 
 
 def save_chat_history(filename, system, history, chatbot):
@@ -143,6 +145,16 @@ def save_chat_history(filename, system, history, chatbot):
     if not filename.endswith(".json"):
         filename += ".json"
     return save_file(filename, system, history, chatbot)
+
+#保存切换对话前的历史文件并加载切换后对话历史文件
+def saveandload_chat_history(filename, system, history, chatbot,loadfilename):
+    save_chat_history(filename, system, history, chatbot)
+    return load_chat_history(loadfilename, system, history, chatbot)
+
+def save_chang_load_chat_history(filename, system, history, chatbot,mychatvalue):
+    save_chat_history(filename, system, history, chatbot)
+    new_file()
+    return load_chat_history(mychatvalue, system, history, chatbot) 
 
 def chang_savefilename(filename):
     if filename == "":
@@ -155,7 +167,7 @@ def chang_Mychatvalue(filename):
     if filename == "":
         return
     if not filename.endswith(".json"):
-        filename += ".json"
+        filename += ".json"   
     return filename
 
 

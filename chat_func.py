@@ -108,7 +108,7 @@ def stream_predict(
     logging.info("实时回答模式")
     partial_words = ""
     counter = 0
-    status_text = "开始实时传输回答……"
+    status_text = "<span style='color:orange;'>开始实时传输回答……</span>"
     history.append(construct_user(inputs))
     history.append(construct_assistant(""))
     if fake_input:
@@ -138,12 +138,12 @@ def stream_predict(
         )
     except requests.exceptions.ConnectTimeout:
         status_text = (
-            standard_error_msg + connection_timeout_prompt + error_retrieve_prompt
+            f"<span style='color:orange;'>{standard_error_msg + connection_timeout_prompt + error_retrieve_prompt}</span>"
         )
         yield get_return_value()
         return
     except requests.exceptions.ReadTimeout:
-        status_text = standard_error_msg + read_timeout_prompt + error_retrieve_prompt
+        status_text = f"<span style='color:orange;'>{standard_error_msg + read_timeout_prompt + error_retrieve_prompt}</span>"
         yield get_return_value()
         return
 
@@ -164,7 +164,7 @@ def stream_predict(
             except json.JSONDecodeError:
                 logging.info(chunk)
                 error_json_str += chunk
-                status_text = f"JSON解析错误。请重置对话。收到的内容: {error_json_str}"
+                status_text = f"<span style='color:orange;'>>JSON解析错误。请重置对话。收到的内容: {error_json_str}</span"
                 yield get_return_value()
                 continue
             # decode each line as response data is in bytes
@@ -182,9 +182,7 @@ def stream_predict(
                     )
                 except KeyError:
                     status_text = (
-                        standard_error_msg
-                        + "API回复中找不到内容。很可能是Token计数达到上限了。请重置对话。当前Token计数: "
-                        + str(sum(all_token_counts))
+                        f"<span style='color:orange;'>{standard_error_msg+'API回复中找不到内容。很可能是Token计数达到上限了。请重置对话。当前Token计数: '+ str(sum(all_token_counts))}</span>"
                     )
                     yield get_return_value()
                     break
@@ -225,15 +223,13 @@ def predict_all(
             selected_model,
         )
     except requests.exceptions.ConnectTimeout:
-        status_text = (
-            standard_error_msg + connection_timeout_prompt + error_retrieve_prompt
-        )
+        status_text = (f"<span style='color:orange;'>{standard_error_msg + connection_timeout_prompt + error_retrieve_prompt}</span>")
         return chatbot, history, status_text, all_token_counts
     except requests.exceptions.ProxyError:
-        status_text = standard_error_msg + proxy_error_prompt + error_retrieve_prompt
+        status_text = f"<span style='color:orange;'>{standard_error_msg + proxy_error_prompt + error_retrieve_prompt}</span>"
         return chatbot, history, status_text, all_token_counts
     except requests.exceptions.SSLError:
-        status_text = standard_error_msg + ssl_error_prompt + error_retrieve_prompt
+        status_text = f"<span style='color:orange;'>{standard_error_msg + ssl_error_prompt + error_retrieve_prompt}</span>"
         return chatbot, history, status_text, all_token_counts
     response = json.loads(response.text)
     content = response["choices"][0]["message"]["content"]
@@ -290,7 +286,7 @@ def predict(
         )
 
     if len(openai_api_key) != 51:
-        status_text = standard_error_msg + no_apikey_msg
+        status_text =standard_error_msg + no_apikey_msg
         logging.info(status_text)
         chatbot.append((parse_text(inputs), ""))
         if len(history) == 0:
@@ -302,7 +298,7 @@ def predict(
         yield chatbot, history, status_text, all_token_counts
         return
 
-    yield chatbot, history, "开始生成回答……", all_token_counts
+    yield chatbot, history, "<span style='color:orange;'>开始生成回答……</span>", all_token_counts
 
     if stream:
         logging.info("使用流式传输")
@@ -320,6 +316,7 @@ def predict(
         )
         for chatbot, history, status_text, all_token_counts in iter:
             yield chatbot, history, status_text, all_token_counts
+            
     else:
         logging.info("不使用流式传输")
         chatbot, history, status_text, all_token_counts = predict_all(
@@ -336,7 +333,7 @@ def predict(
         )
         yield chatbot, history, status_text, all_token_counts
 
-    logging.info(f"传输完毕。当前token计数为{all_token_counts}")
+    logging.info("传输完毕。当前token计数为{all_token_counts}")
     if len(history) > 1 and history[-1]["content"] != inputs:
         logging.info(
             "回答为："
@@ -375,7 +372,7 @@ def predict(
             hidden=True,
         )
         for chatbot, history, status_text, all_token_counts in iter:
-            status_text = f"Token 达到上限，已自动降低Token计数至 {status_text}"
+            status_text = f"<span style='color:orange;'>Token 达到上限，已自动降低Token计数至 {status_text}</span>"
             yield chatbot, history, status_text, all_token_counts
 
 
@@ -392,7 +389,7 @@ def retry(
 ):
     logging.info("重试中……")
     if len(history) == 0:
-        yield chatbot, history, f"{standard_error_msg}上下文是空的", token_count
+        yield chatbot, history, f"<span style='color:orange;'>{standard_error_msg}上下文是空的</span>", token_count
         return
     history.pop()
     inputs = history.pop()["content"]
