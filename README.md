@@ -1,4 +1,4 @@
-<h1 align="center">川虎 ChatGPT 🐯 Chuanhu ChatGPT</h1>
+<h1 align="center">波波的 ChatGPT 🐯改自川虎 Chuanhu ChatGPT</h1>
 <div align="center">
   <a href="https://github.com/GaiZhenBiao/ChuanhuChatGPT">
     <img src="https://user-images.githubusercontent.com/70903329/226267132-e5295925-f53a-4e9d-a221-6099583da98d.png" alt="Logo" height="156">

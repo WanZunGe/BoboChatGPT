@@ -17,6 +17,10 @@
     /*color: var(--body-text-color-subdued);*/
     color: #ff8400;
 }
+
+
+
+
 /* 亮色 */
 @media (prefers-color-scheme: light) {
     #chuanhu_chatbot {
@@ -30,40 +34,52 @@
     }
     [data-testid = "user"] {
         background-color: #138ff5 !important;
+        
     }
+    /*用户输入文字设置*/
     div.message.user.svelte-6roggh.latest{
-        font-family: "Lucida Console", "Courier New", serif;
+        font-family: Arial, Helvetica, sans-serif;
         font-size: 18px !important;
-        font-weight: bold;
+        /* font-weight: bold; */
+        padding-left: 15px !important;
+        padding-right: 10px !important;
     }
     div.message.user.svelte-6roggh{
-        font-family: "Lucida Console", "Courier New", serif;
+        font-family: Arial, Helvetica, sans-serif;
         font-size: 18px !important;
-        font-weight: bold;
+        /* font-weight: bold; */
+        padding-left: 15px !important;
+        padding-right: 10px !important;
     }
+    
     div.output-class.svelte-1mylvt5.no-confidence{
         font-size: 14px !important;
     }
+    /* 通用输出文字设置 */
     p{
         color: #000000 !important;
         font-size: 16px !important;
         font-weight: bold;
+        padding-left: 5px !important;
     }
 
     P.orange-text{
         color: #ff8400 !important;
         font-weight: bold;
     }
+    /* 当文字带有数字标识或者点缩进的时候，设置文字的缩进，避免文字的数标超出对话框 */
     ol{
         padding-left: 20px !important;
     }
+    /* 带数标的输出文字设置 */
     li{
-        color: #070462 !important;
+        color: #1912d6 !important;
         font-size: 16px !important;
         font-weight: bold;
     }
+    /* 通用代码颜色，后面还有各种代码颜色的细分配色 */
     code{
-        color: #c112e0 !important;
+        color: #cc7400 !important;
         font-size: 16px !important;
         font-weight: bold;
     }
@@ -119,6 +135,50 @@
     width: auto !important;
     border-bottom-right-radius: 0 !important;
 }
+
+/* #component-14 {
+    max-width: 100%;
+    width: 200px!important;
+    height: 250px!important;
+} */
+#component-22:hover {
+    /* max-width: 100%; */
+    width: auto!important;
+    height: auto!important;
+}
+/* .systemPromptTxt {
+    max-width: 100%;
+    width: 400px!important;
+    height: 250px!important;
+} */
+/* .my-textbox {
+    max-width: 100%;
+    width: 800px!important;
+    height: 50px!important;
+} */
+/* .my-textbox:hover {
+    max-width: 100%;
+    max-height: 100%;
+    width: 800px!important;
+    height: 200px!important;
+} */
+[data-testid="textbox"] {
+    max-width: 100%;
+    width: 800px!important;
+    height: 50px!important;
+}
+
+[data-testid="textbox"]:hover {
+    max-height: 100%;
+    width: 800px !important;
+    height: 200px !important;
+} 
+
+.ml-2.svelte-1p9xokt{
+    font-size: 16px !important;
+}
+
+
 /* 表格 */
 table {
     margin: 1em 0;
@@ -149,7 +209,7 @@ pre code {
     display: block;
     overflow: auto;
     white-space: pre;
-    background-color: hsla(0, 0%, 0%, 80%)!important;
+    background-color: hsla(0, 0%, 0%, 88%)!important;
     border-radius: 10px;
     padding: 1rem 1.2rem 1rem;
     margin: 1.2em 2em 1.2em 0.5em;

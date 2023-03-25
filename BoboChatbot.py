@@ -178,6 +178,7 @@ with gr.Blocks(
                         label="System prompt",
                         value=initial_prompt,
                         lines=10,
+                        class_name="systemPromptTxt",
                 ).style(container=True)
                 removeHistoryBtn = gr.Button("🗑️ 删除选中的对话记录",click=removeHistoryBtn_click())
                 MyChat=gr.Radio( 
@@ -196,7 +197,8 @@ with gr.Blocks(
             with gr.Row(scale=1):
                 with gr.Column(scale=18):
                     user_input = gr.Textbox(
-                        show_label=False, placeholder="在这里输入"
+                        show_label=False, placeholder="在这里输入",
+                        css_class="my-textbox"
                     ).style(container=False)
                 with gr.Column(min_width=70, scale=1):
                     submitBtn = gr.Button("发送", variant="primary")
@@ -507,6 +509,11 @@ with gr.Blocks(
     )
     #saveHistoryBtn.click(get_history_names, None, [historyFileSelectDropdown])
     saveHistoryBtn.click(get_history_names, None, [MyChat])
+    saveHistoryBtn.click(
+        chang_Mychatvalue,
+        [saveFileName],
+        [MyChat],
+    )
 
     #聊天框有变化时，将聊天框文本存入当前对话文件中
     # chatbot.change(
