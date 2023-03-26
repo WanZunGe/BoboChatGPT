@@ -1,8 +1,15 @@
 :root {
     --chatbot-color-light: #F3F3F3;
     --chatbot-color-dark: #121111;
+    max-width: 100% !important;
 }
-
+html,body{
+    max-width: 100% !important;
+    width: 100% !important;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+} 
 /* status_display */
 #status_display {
     display: flex;
@@ -209,7 +216,7 @@ pre code {
     display: block;
     overflow: auto;
     white-space: pre;
-    background-color: hsla(0, 0%, 0%, 88%)!important;
+    background-color: hsla(0, 0%, 0%, 75%)!important;
     border-radius: 10px;
     padding: 1rem 1.2rem 1rem;
     margin: 1.2em 2em 1.2em 0.5em;

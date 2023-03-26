@@ -26,7 +26,7 @@ logging.basicConfig(
     format="%(asctime)s [%(levelname)s] [%(filename)s:%(lineno)d] %(message)s",
 )
 
-my_api_key = "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"  # 在这里输入你的 API 密钥
+my_api_key = "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"  # 在这里输入你的 API 密钥
 
 flag = False
 
@@ -67,6 +67,7 @@ else:
 
 gr.Chatbot.postprocess = postprocess
 PromptHelper.compact_text_chunks = compact_text_chunks
+
 
 with open("custom.css", "r", encoding="utf-8") as f:
     customCSS = f.read()
@@ -190,8 +191,8 @@ with gr.Blocks(
                     onchange=MyChat_change(),
                 )
 
-        with gr.Column(scale=80):
-            with gr.Row(scale=100):
+        with gr.Column(scale=3):
+            with gr.Row(scale=3):
                 #chatbot = gr.Chatbot(elem_id="chuanhu_chatbot").style(height="100%")
                 chatbot = gr.Chatbot().style(height=800, width=1500)
             with gr.Row(scale=1):
