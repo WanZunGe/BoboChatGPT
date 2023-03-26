@@ -26,7 +26,7 @@ logging.basicConfig(
     format="%(asctime)s [%(levelname)s] [%(filename)s:%(lineno)d] %(message)s",
 )
 
-my_api_key = "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"  # 在这里输入你的 API 密钥
+my_api_key = "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"  # 在这里输入你的 API 密钥
 
 flag = False
 
