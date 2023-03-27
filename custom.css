@@ -171,13 +171,13 @@ html,body{
 } */
 [data-testid="textbox"] {
     max-width: 100%;
-    width: 800px!important;
+    /* width: 800px!important; */
     height: 50px!important;
 }
 
 [data-testid="textbox"]:hover {
     max-height: 100%;
-    width: 100% !important;
+    /* width: 100% !important; */
     height: 200px !important;
 } 
 
