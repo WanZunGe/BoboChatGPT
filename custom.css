@@ -83,7 +83,22 @@ html,body{
         color: #1912d6 !important;
         font-size: 16px !important;
         font-weight: bold;
+        /* padding-left: 10px !important; */
     }
+    li::marker {
+        position: absolute;
+        left: -20px !important;
+        color: #d61219 !important;
+    }
+    /* li::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 5px;
+        width: 10px;
+        height: 10px;
+        background: #d61219;
+      } */
     /* 通用代码颜色，后面还有各种代码颜色的细分配色 */
     code{
         color: #cc7400 !important;
