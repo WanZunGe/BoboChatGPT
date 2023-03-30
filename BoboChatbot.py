@@ -27,7 +27,7 @@ logging.basicConfig(
 )
 
 # my_api_key = "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"  # 在这里输入你的 API 密钥
-my_api_key = "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"
+my_api_key = "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"
 
 flag = False
 
