@@ -36,7 +36,7 @@
 </div>
 
 ## 目录
-|[使用技巧](#使用技巧)|[安装方式](#安装方式)|[疑难杂症解决](#疑难杂症解决)| [给作者买可乐🥤](#捐款) |
+|[使用技巧](#使用技巧)|[安装方式](#安装方式)|[疑难杂症解决](#疑难杂症解决)|
 |  ----  | ----  | ----  | --- |
 
 ## 使用技巧
@@ -372,8 +372,3 @@ DOMAIN-SUFFIX,openai.com,你的代理规则
   <img src="https://contrib.rocks/image?repo=GaiZhenbiao/ChuanhuChatGPT" />
 </a>
 
-## 捐款
-
-🐯请作者喝可乐～
-
-<img width="350" alt="image" src="https://user-images.githubusercontent.com/51039745/223626874-f471e5f5-8a06-43d5-aa31-9d2575b6f631.JPG">
