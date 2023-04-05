@@ -26,7 +26,8 @@ logging.basicConfig(
     format="%(asctime)s [%(levelname)s] [%(filename)s:%(lineno)d] %(message)s",
 )
 
-my_api_key = "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"  # 在这里输入你的 API 密钥
+# my_api_key = "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"  # 在这里输入你的 API 密钥
+my_api_key = "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"
 
 flag = False
 
@@ -488,10 +489,18 @@ with gr.Blocks(
 
     # Template
     templateRefreshBtn.click(get_template_names, None, [templateFileSelectDropdown])
+    
     templateFileSelectDropdown.change(
         load_template,
         [templateFileSelectDropdown],
         [promptTemplates, templateSelectDropdown],
+        show_progress=True,
+    )
+
+    templateSelectDropdown.change(
+        chang_Mychatvalue,
+        [my_test],
+        [MyChat],
         show_progress=True,
     )
     templateSelectDropdown.change(
