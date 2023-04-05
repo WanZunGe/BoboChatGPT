@@ -489,10 +489,18 @@ with gr.Blocks(
 
     # Template
     templateRefreshBtn.click(get_template_names, None, [templateFileSelectDropdown])
+    
     templateFileSelectDropdown.change(
         load_template,
         [templateFileSelectDropdown],
         [promptTemplates, templateSelectDropdown],
+        show_progress=True,
+    )
+
+    templateSelectDropdown.change(
+        chang_Mychatvalue,
+        [my_test],
+        [MyChat],
         show_progress=True,
     )
     templateSelectDropdown.change(
