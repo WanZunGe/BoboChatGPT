@@ -46,6 +46,7 @@ def parse_text(text):
             in_code_block = not in_code_block
         if in_code_block:
             if line.strip() != "":
+
                 new_lines.append(line)
         else:
             new_lines.append(line)
@@ -148,11 +149,7 @@ def save_chat_history(filename, system, history, chatbot):
 
 #保存切换对话前的历史文件并加载切换后对话历史文件
 def saveandload_chat_history(filename, system, history, chatbot,loadfilename):
-    try:
-        save_chat_history(filename, system, history, chatbot)
-    except:
-        logging.info("当前对话历史文件保存异常，不执行任何操作")
-        pass
+    save_chat_history(filename, system, history, chatbot)
     return load_chat_history(loadfilename, system, history, chatbot)
 
 def save_chang_load_chat_history(filename, system, history, chatbot,mychatvalue):

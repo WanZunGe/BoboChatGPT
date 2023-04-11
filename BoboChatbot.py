@@ -145,20 +145,20 @@ with gr.Blocks(
     FALSECONSTANT = gr.State(False)
     topic = gr.State("未命名对话历史记录")
 
-    def removeHistoryBtn_click():
-        global flag
-        print(f"removeHistoryBtn 控件的 click 事件被触发")
-        # 禁止 Checkbox 控件的 change 事件
-        flag = True
+    # def removeHistoryBtn_click():
+    #     global flag
+    #     print(f"removeHistoryBtn 控件的 click 事件被触发")
+    #     # 禁止 Checkbox 控件的 change 事件
+    #     flag = True
 
-    def MyChat_change():
-        global flag
-        if not flag:
-            print(f"MyChat 控件的 change 事件被触发")
-        else:
-            print(f"MyChat 控件的 change 事件被禁止")
-        # 启用 Checkbox 控件的 change 事件
-        flag = False
+    # def MyChat_change():
+    #     global flag
+    #     if not flag:
+    #         print(f"MyChat 控件的 change 事件被触发")
+    #     else:
+    #         print(f"MyChat 控件的 change 事件被禁止")
+    #     # 启用 Checkbox 控件的 change 事件
+    #     flag = False
 
     #tttt = gr.Button("♻️ 总结对话")
 
@@ -182,14 +182,13 @@ with gr.Blocks(
                         lines=10,
                         class_name="systemPromptTxt",
                 ).style(container=True)
-                removeHistoryBtn = gr.Button("🗑️ 删除选中的对话记录",click=removeHistoryBtn_click())
+                removeHistoryBtn = gr.Button("🗑️ 删除选中的对话记录")
                 MyChat=gr.Radio( 
                     label="👨‍👨‍👧 我的对话记录",
                     choices=get_history_names(plain=True),
                     type="value",
                     value="",
                     direction="row",
-                    onchange=MyChat_change(),
                 )
 
         with gr.Column(scale=3):
@@ -279,7 +278,7 @@ with gr.Blocks(
                                         show_label=True,
                                         placeholder=f"设置文件名: 默认为.json，可选为.md",
                                         label="设置保存文件名",
-                                        value="😀新对话",
+                                        value="😀新对话.json",
                                     ).style(container=True)
                                 with gr.Column(scale=1):
                                     saveHistoryBtn = gr.Button("💾 保存对话")
