@@ -186,19 +186,44 @@ html,body{
 } */
 [data-testid="textbox"] {
     max-width: 100%;
-    /* width: 800px!important; */
+    
     height: 50px!important;
 }
 
 [data-testid="textbox"]:hover {
     max-height: 100%;
-    /* width: 100% !important; */
+    
     height: 200px !important;
 } 
 
+/* #user_info {
+    white-space: nowrap;
+    position: absolute; left: 8em; top: .2em;
+    z-index: var(--layer-2);
+    box-shadow: var(--block-shadow);
+    border: none; border-radius: var(--block-label-radius);
+    background: var(--color-accent);
+    padding: var(--block-label-padding);
+    font-size: var(--block-label-text-size); line-height: var(--line-sm);
+    width: auto; min-height: 30px!important;
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+}
+#user_info .wrap {
+    opacity: 0;
+}
+#user_info p {
+    color: white;
+    font-weight: var(--block-label-text-weight);
+}
+#user_info.hideK {
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
 .ml-2.svelte-1p9xokt{
     font-size: 16px !important;
-}
+} */
 
 
 /* 表格 */
