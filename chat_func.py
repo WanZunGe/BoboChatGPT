@@ -160,6 +160,8 @@ def stream_predict(
             chunk = chunk.decode()
             chunklength = len(chunk)
             try:
+                #chunk是一个字符串类型的变量，用于存储从HTTP响应中读取的数据。这个数据本身是一个JSON格式的文本
+                # 这个JSON格式的文本开头是一个长度为6的非JSON字符，因此需要将其去掉，才能进行后续的解析操作
                 chunk = json.loads(chunk[6:])
             except json.JSONDecodeError:
                 logging.info(chunk)
